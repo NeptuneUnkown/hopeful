@@ -1,0 +1,117 @@
+local Vexium = loadstring(game:HttpGet('https://raw.githubusercontent.com/NeptuneUnkown/hopeful/main/CIHYIAHFTTMULITYAABHHCHMAWIKIAEBIO'))()
+local Window = Vexium:CreateWindow({
+    Name = "Vexium",
+    LoadingTitle = "Vexium - Hoops Life",
+    LoadingSubtitle = "By Percy",
+    ConfigurationSaving = {
+       Enabled = true,
+       FolderName = nil, -- Create a custom folder for your hub/game
+       FileName = "VxDocs"
+    },
+    Discord = {
+       Enabled = false,
+       Invite = "ABCD", -- The Discord invite code, do not include discord.gg/
+       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+    },
+    KeySystem = false, -- Set this to true to use our key system
+    KeySettings = {
+       Title = "Vexium Hub",
+       Subtitle = "Key System",
+       Note = "Join the discord (discord.gg/sirius)",
+       FileName = "SiriusKey",
+       SaveKey = true,
+       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+       Key = "Hello"
+    }
+})
+
+local Home = Window:CreateTab("Home", 6035030083) 
+local TpSec = Home:CreateSection("Teleports")
+
+local Button = Home:CreateButton({
+   Name = "Gym",
+   Callback = function()
+        gametp(newgym)
+   end,
+})
+local Button = Home:CreateButton({
+    Name = "Old Gym",
+    Callback = function()
+         gametp(oldgym)
+    end,
+ })
+ local Button = Home:CreateButton({
+    Name = "Park",
+    Callback = function()
+         gametp(park)
+    end,
+ })
+ local Button = Home:CreateButton({
+    Name = "Matchmaking",
+    Callback = function()
+         gametp(matchmaking)
+    end,
+ })
+ local Button = Home:CreateButton({
+    Name = "Stage",
+    Callback = function()
+         gametp(stage)
+    end,
+ })
+ local Button = Home:CreateButton({
+    Name = "Main Menu",
+    Callback = function()
+         gametp(buildscreen)
+    end,
+ })
+local OtherSec = Home:CreateSection("Other")
+local Slider = Home:CreateSlider({
+    Name = "Speed",
+    Range = {14, 250},
+    Increment = .1,
+    Suffix = "Walkspeed",
+    CurrentValue = 14,
+    Flag = "Speed Slider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        game:GetService('Players').LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    -- The function that takes place when the slider changes
+    -- The variable (Value) is a number which correlates to the value the slider is currently at
+    end,
+ })
+
+local boostamount
+local boosttype
+local Input = Home:CreateInput({
+   Name = "Purchase Boost",
+   PlaceholderText = "Boost Amount",
+   RemoveTextAfterFocusLost = false,
+   Callback = function(Text)
+    boostamount = Text
+   -- The function that takes place when the input is changed
+   -- The variable (Text) is a string for the value in the text box
+   end,
+})
+
+local Dropdown = Home:CreateDropdown({
+   Name = "Boost Type",
+   Options = {"Defense", "Shooting", "Playmaking", "Finishing"},
+   CurrentOption = "Option 1",
+   Flag = "BoostTypeDrop", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Option)
+    boosttype = Option
+   -- The function that takes place when the selected option is changed
+   -- The variable (Option) is a string for the value that the dropdown was changed to
+   end,
+})
+
+local Button = Home:CreateButton({
+    Name = "Buy Boost",
+    Callback = function()
+        local args = {
+            [1] = boosttype,
+            [2] = boostamount
+        }
+        
+        game:GetService("ReplicatedStorage").Plaza.Remotes.BuyBoost:InvokeServer(unpack(args))
+    end,
+})
